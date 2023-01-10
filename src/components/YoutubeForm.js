@@ -24,9 +24,17 @@ const validationSchema = Yup.object({
   name: Yup.string().required('Required'),
   email: Yup.string().email('Invalid email format').required('Required'),
   channel: Yup.string().required('Required'),
-  comments: Yup.string().required('Required'),
-  adress: Yup.string().required('Required'),
+  // comments: Yup.string().required('Required'),
+  // adress: Yup.string().required('Required'),
 });
+
+const validateComments = value => {
+  let error;
+  if (!value) {
+    error = 'Required';
+  }
+  return error;
+};
 
 const YoutubeForm = () => {
   return (
@@ -34,6 +42,8 @@ const YoutubeForm = () => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      // validateOnChange={false}
+      // validateOnBlur={false}
     >
       <Form>
         <div className='form-control'>
@@ -60,7 +70,13 @@ const YoutubeForm = () => {
 
         <div className='form-control'>
           <label htmlFor='comments'>Comments</label>
-          <Field as='textarea' id='comments' name='comments' />
+          <Field
+            as='textarea'
+            id='comments'
+            name='comments'
+            validate={validateComments}
+          />
+          <ErrorMessage name='comments' component={TextError} />
         </div>
 
         <div className='form-control'>
@@ -103,22 +119,27 @@ const YoutubeForm = () => {
           <label>List of phone numbers</label>
           <FieldArray name='phNumbers'>
             {fieldArrayProps => {
-              console.log('Field array props', fieldArrayProps);
+              // console.log('Field array props', fieldArrayProps);
               const { push, remove, form } = fieldArrayProps;
               const { values } = form;
               const { phNumbers } = values;
+              console.log('Form Errors', form.errors);
               return (
                 <div>
                   {phNumbers.map((phNumber, index) => {
-                    <div key={index}>
-                      <Field name={`phNumbers[${index}]`} />
-                      <button type='button' onClick={() => remove(index)}>
-                        -
-                      </button>
-                      <button type='button' onClick={() => push('')}>
-                        +
-                      </button>
-                    </div>;
+                    return (
+                      <div key={index}>
+                        <Field name={`phNumbers[${index}]`} />
+                        {index > 0 && (
+                          <button type='button' onClick={() => remove(index)}>
+                            -
+                          </button>
+                        )}
+                        <button type='button' onClick={() => push('')}>
+                          +
+                        </button>
+                      </div>
+                    );
                   })}
                 </div>
               );
