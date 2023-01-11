@@ -1,11 +1,16 @@
 import style from './App.css';
-import OldYoutubeForm from './components/OldYoutubeform';
-import YoutubeForm from './components/YoutubeForm';
+import CourseForm from './components/CourseForm';
+import FormikContainer from './components/FormikContainer';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
 
 function App() {
   return (
     <div className='App'>
-      <YoutubeForm />
+      {/* <FormikContainer /> */}
+      {/* <LoginForm /> */}
+      {/* <RegistrationForm /> */}
+      <CourseForm />
     </div>
   );
 }
